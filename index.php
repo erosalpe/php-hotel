@@ -59,8 +59,27 @@
     <div class="d-flex gap-5">
         <?php foreach($hotels as $element): ?>
             <?php
-                if(isset($votoScelto) || isset($parkScelto)){
-                    (($element['parking'] == true && $parkScelto == 'on') || ($element['vote'] == $votoScelto)) ? $attivo = 'd-block' : $attivo = 'd-none';
+                if(isset($votoScelto) && isset($parkScelto)){
+                    if(($element['parking'] == true && $parkScelto == 'on') && ($element['vote'] >= $votoScelto)){
+                        $attivo = 'd-block';
+                    } else {
+                        $attivo = 'd-none';
+                        $x++;
+                    }
+                } elseif (isset($votoScelto)) {
+                    if($element['vote'] >= $votoScelto){
+                        $attivo = 'd-block';
+                    } else {
+                        $attivo = 'd-none';
+                        $x++;
+                    }
+                } elseif (isset($parkScelto)) {
+                    if($element['parking'] == true && $parkScelto == 'on'){
+                        $attivo = 'd-block';
+                    } else {
+                        $attivo = 'd-none';
+                        $x++;
+                    }
                 }
             ?>
         <div class="card <?= $attivo; ?>" style="width: 18rem;">
@@ -77,6 +96,11 @@
             </ul>
         </div>
         <?php endforeach; ?>
+        <?php
+        if($x == count($hotels)){
+            echo "<h2>Non esistono risultati che soddisfano la ricerca</h2>";
+        }
+        ?>
     </div>
 </body>
 </html>
