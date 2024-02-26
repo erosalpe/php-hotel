@@ -37,6 +37,8 @@
         ],
 
     ];
+    $votoScelto = $_GET['voto'];
+    $parkScelto = $_GET['parcheggio'];
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -47,9 +49,21 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css' integrity='sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==' crossorigin='anonymous'/>
 </head>
 <body>
+    <form action="index.php">
+        <label for="fname">Voto</label>
+        <input type="number" id="voto" name="voto"><br><br>
+        <label for="lname">Parcheggio</label>
+        <input type="radio" id="parcheggio" name="parcheggio"><br><br>
+        <button>Cerca!</button>
+    </form>
     <div class="d-flex gap-5">
         <?php foreach($hotels as $element): ?>
-        <div class="card" style="width: 18rem;">
+            <?php
+                if(isset($votoScelto) || isset($parkScelto)){
+                    (($element['parking'] == true && $parkScelto == 'on') || ($element['vote'] == $votoScelto)) ? $attivo = 'd-block' : $attivo = 'd-none';
+                }
+            ?>
+        <div class="card <?= $attivo; ?>" style="width: 18rem;">
             <img src="https://picsum.photos/200" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title"><?=$element['name']?></h5>
